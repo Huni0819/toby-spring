@@ -8,8 +8,38 @@ import java.net.URISyntaxException;
 
 public class ApiTemplate {
 
+    private final ApiExecutor apiExecutor;
+    private final ExRateExtractor exRateExtractor;
+
+    // 디폴트 콜백 설정
+    public ApiTemplate() {
+        this.apiExecutor = new HttpClientApiExecutor();
+        this.exRateExtractor = new ErApiExRateExtractor();
+    }
+
+    public ApiTemplate(ApiExecutor apiExecutor, ExRateExtractor exRateExtractor) {
+        this.apiExecutor = apiExecutor;
+        this.exRateExtractor = exRateExtractor;
+    }
+
+    // convenient method
+    public BigDecimal getForExRate(String url) {
+
+        return this.getForExRate(url, this.apiExecutor, this.exRateExtractor);
+    }
+
+    public BigDecimal getForExRate(String url, ApiExecutor apiExecutor) {
+
+        return this.getForExRate(url, apiExecutor, this.exRateExtractor);
+    }
+
+    public BigDecimal getForExRate(String url, ExRateExtractor exRateExtractor) {
+
+        return this.getForExRate(url, this.apiExecutor, exRateExtractor);
+    }
+
     // 템플릿 - 변하지 않는 속성의 코드
-    public BigDecimal getExRate(String url, ApiExecutor apiExecutor,
+    public BigDecimal getForExRate(String url, ApiExecutor apiExecutor,
         ExRateExtractor exRateExtractor) {
 
         // Callback 참조 정보 생성
