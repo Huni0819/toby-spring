@@ -6,19 +6,22 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import tobyspring.hellospring.api.ApiExecutor;
 import tobyspring.hellospring.api.SimpleApiExecutor;
 import tobyspring.hellospring.payment.ExRateProvider;
 
 public class WebApiExRateProvider implements ExRateProvider {
 
+    // 클라이언트 - 클라이언트가 콜백을 만들어서 템플릿을 호출한다.
     @Override
     public BigDecimal getExRate(String currency) {
         String url = "https://open.er-api.com/v6/latest/" + currency;
 
-        return runApiForExRate(url);
+        return runApiForExRate(url, new SimpleApiExecutor());
     }
 
-    private static BigDecimal runApiForExRate(String url) {
+    // 템플릿 - 변하지 않는 속성의 코드
+    private static BigDecimal runApiForExRate(String url, ApiExecutor apiExecutor) {
         URI uri;
         try {
             uri = new URI(url);
@@ -28,7 +31,7 @@ public class WebApiExRateProvider implements ExRateProvider {
 
         String response;
         try {
-            response = new SimpleApiExecutor().execute(uri);
+            response = apiExecutor.execute(uri);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
