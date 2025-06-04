@@ -1,17 +1,18 @@
 package tobyspring.hellospring.payment;
 
+import static java.math.BigDecimal.TEN;
+import static java.math.BigDecimal.valueOf;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.*;
-
-import static java.math.BigDecimal.TEN;
-import static java.math.BigDecimal.valueOf;
-import static org.assertj.core.api.Assertions.assertThat;
 
 class PaymentServiceTest {
 
@@ -20,12 +21,12 @@ class PaymentServiceTest {
     @BeforeEach
     void setup() {
 
-         this.clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        this.clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
     }
 
     @Test
     @DisplayName("prepare 메소드가 요구사항 3가지를 잘 충족했는지 검증")
-    void convertedAmount() throws IOException {
+    void convertedAmount() {
 
         testAmount(valueOf(500L), valueOf(5_000L), this.clock);
         testAmount(valueOf(1_000L), valueOf(10_000L), this.clock);
@@ -33,9 +34,10 @@ class PaymentServiceTest {
     }
 
     @Test
-    void validUntil() throws IOException {
+    void validUntil() {
 
-        PaymentService paymentService = new PaymentService(new ExRateProviderStub(valueOf(1_000L)), clock);
+        PaymentService paymentService = new PaymentService(new ExRateProviderStub(valueOf(1_000L)),
+            clock);
         Payment payment = paymentService.prepare(1L, "USD", TEN);
 
         // 3. 원화환산금액의 유효시간 계산
@@ -43,10 +45,10 @@ class PaymentServiceTest {
         LocalDateTime expectedValidUntil = now.plusMinutes(30);
 
         Assertions.assertThat(payment.getValidUntil())
-                .isEqualTo(expectedValidUntil);
+            .isEqualTo(expectedValidUntil);
     }
 
-    private static Payment testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) throws IOException {
+    private static Payment testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) {
         // given
         PaymentService paymentService = new PaymentService(new ExRateProviderStub(exRate), clock);
 

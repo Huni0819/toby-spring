@@ -1,11 +1,10 @@
 package tobyspring.hellospring;
 
+import java.util.Arrays;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 class SortTest {
 
@@ -23,7 +22,7 @@ class SortTest {
         List<String> lists = sort.sortByLength(Arrays.asList("aa", "b"));
 
         Assertions.assertThat(lists)
-                .isEqualTo(List.of("b", "aa"));
+            .isEqualTo(List.of("b", "aa"));
     }
 
     @Test
@@ -32,7 +31,7 @@ class SortTest {
         List<String> lists = sort.sortByLength(Arrays.asList("aa", "ccc", "b"));
 
         Assertions.assertThat(lists)
-                .isEqualTo(List.of("b", "aa", "ccc"));
+            .isEqualTo(List.of("b", "aa", "ccc"));
     }
 
     @Test
@@ -41,6 +40,6 @@ class SortTest {
         List<String> lists = sort.sortByLength(Arrays.asList("b", "aa", "ccc"));
 
         Assertions.assertThat(lists)
-                .isEqualTo(List.of("b", "aa", "ccc"));
+            .isEqualTo(List.of("b", "aa", "ccc"));
     }
 }

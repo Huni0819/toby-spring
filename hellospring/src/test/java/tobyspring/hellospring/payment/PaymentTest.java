@@ -1,15 +1,17 @@
 package tobyspring.hellospring.payment;
 
+import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-
-public class PaymentTest {
+class PaymentTest {
 
     Clock clock;
     ExRateProvider exRateProvider;
@@ -22,26 +24,27 @@ public class PaymentTest {
     }
 
     @Test
-    void createPrepared() throws IOException {
+    void createPrepared() {
 
         Payment payment = Payment.createPrepared(
-                1L, "USD", BigDecimal.TEN, exRateProvider, clock
+            1L, "USD", BigDecimal.TEN, exRateProvider, clock
         );
 
         Assertions.assertThat(payment.getConvertedAmount())
-                .isEqualByComparingTo(BigDecimal.valueOf(10_000));
+            .isEqualByComparingTo(BigDecimal.valueOf(10_000));
         Assertions.assertThat(payment.getValidUntil())
-                .isEqualTo(LocalDateTime.now(clock).plusMinutes(30));
+            .isEqualTo(LocalDateTime.now(clock).plusMinutes(30));
     }
 
     @Test
-    void isValid() throws IOException {
+    void isValid() {
 
         Payment payment = Payment.createPrepared(
-                1L, "USD", BigDecimal.TEN, exRateProvider, clock
+            1L, "USD", BigDecimal.TEN, exRateProvider, clock
         );
 
         Assertions.assertThat(payment.isValid(clock)).isTrue();
-        Assertions.assertThat(payment.isValid(Clock.offset(clock, Duration.of(30, ChronoUnit.MINUTES)))).isFalse();
+        Assertions.assertThat(
+            payment.isValid(Clock.offset(clock, Duration.of(30, ChronoUnit.MINUTES)))).isFalse();
     }
 }
