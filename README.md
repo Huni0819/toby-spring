@@ -278,3 +278,34 @@
       1. 핵심 workflow를 가진 메소드
       2. RequestCallback
       3. ResponseExtractor
+
+## 섹션6. 예외
+
+### 예외를 다루는 방법
+
+1. 예외?
+   1. 정상적인 프로그램 흐름을 방해하는 사건
+   2. 예외적인 상황에서만 사용
+      1. 예외적인 상황이 아닌 내가 컨트롤하기 위한 기법으로 사용하는건 좋지 않다.
+      2. try-catch를 이용해서 정상적인 값을 리턴하는 수단으로 사용하는 건 좋지 않다.
+   3. 프로그램 오류, 버그 때문에 발생한다.
+2. 예외처리?
+   1. 예외를 처리할 때 `catch` 블록에서 예외를 무시하는건 좋지 않다.
+      1. 로그를 남기는 것도 좋지만 예외를 밖으로 던져야 한다.
+   2. 무책임하게 `throws`로 예외 처리를 넘기는건 좋지 않다.
+3. Check Exception을 만나면
+   1. RuntimeException이나 적절한 추상화 레벨의 예외로 전환해서 던질 것
+4. 예외를 적절하게 추상화해서 사용하고 전환해서 사용해야 한다.
+   1. 사용 기술마다 같은 문제에 대해서 다른 예외가 발생한다.
+
+### JPA를 이용한 Order 저장
+
+1. Unique 제약조건을 걸고 동일한 값을 넣으면 어떤 예외가 발생하는지?
+   1. `org.hibernate.exception.ConstraintViolationException`
+   2. 하지만 프로젝트에서 JPA가 아닌 다른 방식으로 변경된다면? ex ) 마이바티스, JDBC
+2. `JDBC SQLException`
+   1. JDBC를 기반으로 하는 모든 기술에서 발생하는 예외
+   2. Spring에서는 예외를 추상화
+3. `DataAccessException`
+   1. exception translation 도구를 제공한다.
+4. 기술의 변화가 애플리케이션 코드에 영향을 주지 않도록
