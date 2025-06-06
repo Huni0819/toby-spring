@@ -17,7 +17,7 @@ public class DataClient {
 
         System.out.println(order);
 
-        Order order2 = new Order("100", BigDecimal.ONE);
+        Order order2 = new Order("200", BigDecimal.ONE);
         repository.save(order2);
 
     }
