@@ -12,7 +12,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import tobyspring.hellospring.data.OrderRepository;
 
 @Configuration
 public class DataConfig {
@@ -47,11 +46,5 @@ public class DataConfig {
     @Bean
     public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
-    }
-
-    @Bean
-    public OrderRepository orderRepository(EntityManagerFactory emf) {
-
-        return new OrderRepository();
     }
 }
